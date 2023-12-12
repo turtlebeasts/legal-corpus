@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import DrawerAppBar from './components/DrawerAppBar'
+import Home from "./pages/Home"
+import Services from "./pages/Services"
+import Contact from "./pages/Contact"
+import Schedule from "./pages/Schedule"
+import Login from "./pages/Login"
+import { ThemeProvider, createTheme } from '@mui/material'
+import { useState } from 'react'
+import Footer from './components/Footer'
+
+const darkTheme = createTheme({
+  palette: {
+    mode : 'dark',
+  }
+})
+
+const lightTheme = createTheme({
+  palette: {
+    mode : 'light',
+  }
+})
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [dark, setDark] = useState(false)
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ThemeProvider theme={dark? darkTheme: lightTheme}>
+      <BrowserRouter>
+        <DrawerAppBar setDark={setDark} dark={dark}/>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/services' element={<Services />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/schedule' element={<Schedule />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+        <Footer/>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
